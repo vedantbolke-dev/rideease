@@ -1,99 +1,97 @@
-# 🚲 RideEase: Premium Bike Rental System
+# 🚲 RideEase — Bike Rental Management System
 
-A high-end, feature-rich Django web application designed for seamless bike rentals, featuring role-based access control, an interactive analytics dashboard, live pricing estimation, automated PDF invoices, CSV/PDF data exports, and a modern dark/light theme.
+A full-stack web application for managing bike rentals with role-based access, real-time booking management, and an analytics dashboard. Built with **Django**, **MySQL**, and **Bootstrap 5**.
 
----
-
-[![Python](https://img.shields.io/badge/python-3.10+-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/django-4.2-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
-[![Bootstrap 5](https://img.shields.io/badge/bootstrap-5.3-7952b3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![SQLite](https://img.shields.io/badge/sqlite-3.0-07405e?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![MySQL](https://img.shields.io/badge/mysql-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+> Built by [Vedant Bolke](https://github.com/vedantbolke-dev)
+> 
+> 🌐 **Live Demo**: [vedantbolkedev.pythonanywhere.com](https://vedantbolkedev.pythonanywhere.com)
+> 🔑 **Demo Admin Login**: Username: `admin` | Password: `Admin@123`
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## ⚡ Tech Stack
 
-| Layer | Technology | Description |
-| :--- | :--- | :--- |
-| **Backend** | Python 3.10+, Django 4.2 | Scalable MVC backend architecture. |
-| **Frontend** | HTML5, CSS3, JavaScript (ES6), Bootstrap 5 | Glassmorphic UI with local-storage dark/light toggle and custom animations. |
-| **Database** | SQLite (Default fallback) / MySQL 8.0 | Dual-compatible database layer with automatic environment detection. |
-| **Reports** | ReportLab (PDF), CSV Writer | Direct-to-client automated invoice generation and data exports. |
-| **Charts** | Chart.js 4 | Interactive charts for administrator analytics dashboard. |
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-4.2-092E20?style=for-the-badge&logo=django&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-Analytics-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-### System Architecture Diagram
+---
 
-```mermaid
-graph TD
-    Client[Browser / Client UI]
-    UsersApp[users app: CustomUser & Auth]
-    BikesApp[bikes app: Bike & Contacts]
-    BookingsApp[bookings app: Booking & Reviews]
-    DashboardApp[dashboard app: Analytics & Reports]
-    Database("Database Layer: SQLite / MySQL")
+## 📸 Screenshots
 
-    Client -->|Interacts| UsersApp
-    Client -->|Browse & Search| BikesApp
-    Client -->|Rents & Reviews| BookingsApp
-    Client -->|Controls & Export| DashboardApp
+### 🏠 Customer Portal
 
-    UsersApp -->|Performs Auth| Database
-    BikesApp -->|Saves Inventory| Database
-    BookingsApp -->|Calculates Price & Logs| Database
-    DashboardApp -->|Aggregates Analytics| Database
+#### Homepage
+![Homepage](ride_easy%20images/Screenshot%202026-04-04%20113841.png)
 
-    classDef appNode fill:#ff5c00,stroke:#e04f00,stroke-width:2px,color:#fff;
-    classDef dbNode fill:#07405e,stroke:#052e44,stroke-width:2px,color:#fff;
-    classDef clientNode fill:#18181b,stroke:#27272a,stroke-width:2px,color:#a1a1aa;
+<details>
+<summary><b>🔍 View More Customer Pages (Bike Listings, Booking, Dashboard)</b></summary>
+<br>
 
-    class Client clientNode;
-    class UsersApp appNode;
-    class BikesApp appNode;
-    class BookingsApp appNode;
-    class DashboardApp appNode;
-    class Database dbNode;
+#### Bike Listings & Search
+![Bike Listings](ride_easy%20images/Screenshot%202026-04-04%20114112.png)
+
+#### Bike Details & Booking
+![Bike Details](ride_easy%20images/Screenshot%202026-04-04%20114329.png)
+
+#### User Dashboard
+![User Dashboard](ride_easy%20images/Screenshot%202026-04-04%20114419.png)
+</details>
+
+### 🔧 Admin Dashboard
+
+#### Revenue & Bookings Analytics
+![Admin Dashboard](ride_easy%20images/Screenshot%202026-04-04%20114455.png)
+
+<details>
+<summary><b>⚙️ View More Admin Pages (Manage Bikes, Manage Bookings)</b></summary>
+<br>
+
+#### Manage Bikes
+![Manage Bikes](ride_easy%20images/Screenshot%202026-04-04%20120128.png)
+
+#### Manage Bookings & Users
+![Manage Bookings](ride_easy%20images/Screenshot%202026-04-04%20120734.png)
+</details>
+
+---
+
+## 🎯 Key Features
+
+### 👤 Customer Portal
+- **User Authentication** — Register, login, logout with Django's auth system
+- **Smart Bike Search** — Filter by category, availability, fuel type & transmission
+- **Booking System** — Date-based booking with automatic cost calculation (rate × days + helmet deposit)
+- **Double-Booking Prevention** — Date overlap validation ensures no conflicts
+- **Booking Lifecycle** — Track status (Pending → Confirmed → Completed / Cancelled)
+- **Profile Management** — Update personal details, upload driving license
+
+### 🔧 Admin Dashboard
+- **Revenue Analytics** — Chart.js powered graphs (revenue, bookings trend, category breakdown)
+- **Bike Management** — Full CRUD with image upload & featured bike selection
+- **Booking Control** — Approve, reject, or complete bookings with admin notes
+- **User Management** — Block/unblock users, view user activity
+- **Inbox Messages** — View and respond to contact inquiries
+
+---
+
+## 🏗️ Architecture
+
 ```
-
----
-
-## ✨ Key Features
-
-- **🌓 Obsidian Design System:** Premium dark and light mode toggle backed by local storage and an anti-flicker script.
-- **🛡️ Role-Based Access Control:** Separate customer dashboard (active bookings, profiles, invoice histories) and administrator dashboard (fleet statistics, booking approvals, contact inbox).
-- **🚴 Smart Booking Engine:** Real-time cost estimator on pickup/dropoff dates, including deposit calculations and automatic vehicle status lockouts.
-- **📊 Business Intelligence Panel:** Interactive charts (sales growth line charts, vehicle category doughnuts, booking summaries) rendered via Chart.js.
-- **📄 Instant PDF Invoicing:** Direct download of structured, beautifully typeset PDF booking receipts generated via ReportLab.
-- **📥 Enterprise Data Exports:** Single-click exports of all bookings, vehicles, and user accounts in structured CSV or print-ready PDF formats.
-- **📦 Dual-Database Support:** Defaults to an instant plug-and-play SQLite database for quick local reviews, with seamless configuration switches to production-ready MySQL.
-
----
-
-## 🔑 Login Credentials
-
-| Role | Username | Password | Access URL |
-| :--- | :--- | :--- | :--- |
-| **Administrator** | `admin` | `Admin@123` | `/dashboard/` |
-| **Customer** | `rahul_sharma` | `User@123` | `/users/dashboard/` |
-| **Customer** | `priya_patil` | `User@123` | `/users/dashboard/` |
-
----
-
-## 🎯 Important Endpoints
-
-| Page | URL | Description |
-| :--- | :--- | :--- |
-| **Landing Page** | `/` | Responsive home page with category browsers and CTA triggers. |
-| **Bike Fleet** | `/bikes/` | Fleet catalogs with search, category, and availability filters. |
-| **Admin Analytics** | `/dashboard/` | Chart.js analytics dashboard, inbox, and fleet managers. |
-| **Data Exports** | `/dashboard/export/bookings/pdf/` | Export system logs directly to print-ready PDF/CSV reports. |
-| **Booking Invoice** | `/bookings/<id>/invoice/pdf/` | Generate dynamic PDF client invoices on-demand. |
-
----
-
-## 📝 Developed By
-
-- **Lead Developer:** [Vedant Bolke](https://github.com/vedantbolke-dev)
-- **Institution:** Shri Dnyaneshwar Mahavidalaya, Maharashtra
-- **Academic Year:** 2025–2026
-- **Specialization:** B.Sc. Computer Science (Web Technology Project)
+rideease/
+├── apps/
+│   ├── bikes/          # Bike listings, category filter, search
+│   ├── bookings/       # Booking CRUD, invoice PDF, star reviews
+│   ├── dashboard/      # Admin analytics, charts, CSV/PDF exports
+│   └── users/          # Auth, custom user profiles
+├── rideease/           # Django project settings & URL routing
+├── templates/          # HTML templates & layouts
+├── static/             # CSS stylesheets & JS scripts
+├── media/              # Uploaded profile & bike assets
+├── manage.py
+├── requirements.txt
+└── .env.example
+```
