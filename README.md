@@ -156,8 +156,7 @@ python manage.py seed_data
 
 ## 📝 Developed By
 
-- **Lead Developer:** [Developer Name](https://github.com/yourusername)
-- **Associate Developer:** [Partner Name](https://github.com/partnerusername)
-- **Institution:** [Your College Name], Maharashtra
+- **Lead Developer:** [Vedant Bolke](https://github.com/vedantbolke-dev)
+- **Institution:** Shri Dnyaneshwar Mahavidhalaya, Maharashtra
 - **Academic Year:** 2025–2026
 - **Specialization:** B.Sc. Computer Science (Web Technology Project)
