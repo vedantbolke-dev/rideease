@@ -31,7 +31,7 @@ graph TD
     BikesApp[bikes app: Bike & Contacts]
     BookingsApp[bookings app: Booking & Reviews]
     DashboardApp[dashboard app: Analytics & Reports]
-    Database[(Database Layer: SQLite / MySQL)]
+    Database("Database Layer: SQLite / MySQL")
 
     Client -->|Interacts| UsersApp
     Client -->|Browse & Search| BikesApp
