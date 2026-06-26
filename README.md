@@ -26,17 +26,12 @@ A high-end, feature-rich Django web application designed for seamless bike renta
 
 ```mermaid
 graph TD
-    classDef appNode fill:#ff5c00,stroke:#e04f00,stroke-width:2px,color:#fff;
-    classDef dbNode fill:#07405e,stroke:#052e44,stroke-width:2px,color:#fff;
-    classDef clientNode fill:#18181b,stroke:#27272a,stroke-width:2px,color:#a1a1aa;
-
-    Client[Browser / Client UI] :::clientNode
-    UsersApp[users app: CustomUser & Auth] :::appNode
-    BikesApp[bikes app: Bike & Contacts] :::appNode
-    BookingsApp[bookings app: Booking & Reviews] :::appNode
-    DashboardApp[dashboard app: Analytics & Reports] :::appNode
-    
-    Database[(Database Layer: SQLite / MySQL)] :::dbNode
+    Client[Browser / Client UI]
+    UsersApp[users app: CustomUser & Auth]
+    BikesApp[bikes app: Bike & Contacts]
+    BookingsApp[bookings app: Booking & Reviews]
+    DashboardApp[dashboard app: Analytics & Reports]
+    Database[(Database Layer: SQLite / MySQL)]
 
     Client -->|Interacts| UsersApp
     Client -->|Browse & Search| BikesApp
@@ -47,6 +42,17 @@ graph TD
     BikesApp -->|Saves Inventory| Database
     BookingsApp -->|Calculates Price & Logs| Database
     DashboardApp -->|Aggregates Analytics| Database
+
+    classDef appNode fill:#ff5c00,stroke:#e04f00,stroke-width:2px,color:#fff;
+    classDef dbNode fill:#07405e,stroke:#052e44,stroke-width:2px,color:#fff;
+    classDef clientNode fill:#18181b,stroke:#27272a,stroke-width:2px,color:#a1a1aa;
+
+    class Client clientNode;
+    class UsersApp appNode;
+    class BikesApp appNode;
+    class BookingsApp appNode;
+    class DashboardApp appNode;
+    class Database dbNode;
 ```
 
 ---
@@ -157,6 +163,6 @@ python manage.py seed_data
 ## 📝 Developed By
 
 - **Lead Developer:** [Vedant Bolke](https://github.com/vedantbolke-dev)
-- **Institution:** Shri Dnyaneshwar Mahavidhalaya, Maharashtra
+- **Institution:** Shri Dnyaneshwar Mahavidalaya, Maharashtra
 - **Academic Year:** 2025–2026
 - **Specialization:** B.Sc. Computer Science (Web Technology Project)
