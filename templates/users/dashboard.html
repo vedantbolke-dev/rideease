@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard — RideEase{% endblock %}
+{% block content %}
+<div class="page-header-section pt-5 mt-5 pb-4 bg-dark text-white">
+    <div class="container">
+        <h2 class="fw-bold mb-0">My <span class="text-warning">Dashboard</span></h2>
+        <p class="text-muted mb-0">Welcome back, {{ user.first_name|default:user.username }}!</p>
+    </div>
+</div>
+<div class="container py-5">
+    <!-- Stats -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-2 fw-bold text-warning">{{ total_bookings }}</div>
+                <div class="text-muted small">Total Bookings</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-2 fw-bold text-success">{{ active_count }}</div>
+                <div class="text-muted small">Active</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="fs-2 fw-bold text-secondary">{{ completed_count }}</div>
+                <div class="text-muted small">Completed</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <a href="{% url 'bikes:list' %}?availability=available" class="text-decoration-none">
+                    <div class="fs-2 fw-bold text-warning"><i class="bi bi-bicycle"></i></div>
+                    <div class="text-muted small">Browse Bikes</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Bookings -->
+    {% if active_bookings %}
+    <h5 class="fw-bold mb-3"><i class="bi bi-clock-history text-warning me-2"></i>Active Bookings</h5>
+    <div class="row g-3 mb-5">
+        {% for booking in active_bookings %}
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm border-start border-warning border-3">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6 class="fw-bold mb-0">{{ booking.bike.brand }} {{ booking.bike.name }}</h6>
+                        <span class="badge {{ booking.get_status_badge_class }}">{{ booking.get_status_display }}</span>
+                    </div>
+                    <div class="text-muted small mb-2">
+                        <i class="bi bi-calendar3 me-1"></i>{{ booking.pickup_date|date:"d M Y" }} → {{ booking.return_date|date:"d M Y" }}
+                        <span class="ms-2">({{ booking.total_days }} day{{ booking.total_days|pluralize }})</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-warning">&#8377;{{ booking.total_cost }}</span>
+                        <div class="d-flex gap-1">
+                            <a href="{% url 'bookings:detail' booking.pk %}" class="btn btn-sm btn-outline-warning">View</a>
+                            {% if booking.can_cancel %}
+                            <a href="{% url 'bookings:cancel' booking.pk %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Past Bookings -->
+    <h5 class="fw-bold mb-3"><i class="bi bi-clock text-muted me-2"></i>Booking History</h5>
+    {% if past_bookings %}
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Bike</th>
+                        <th>Dates</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in past_bookings %}
+                    <tr>
+                        <td class="text-muted small">#{{ booking.pk }}</td>
+                        <td>
+                            <div class="fw-semibold small">{{ booking.bike.brand }} {{ booking.bike.name }}</div>
+                            <div class="text-muted" style="font-size:0.75rem;">{{ booking.bike.get_category_display }}</div>
+                        </td>
+                        <td class="small">{{ booking.pickup_date|date:"d M Y" }}<br><span class="text-muted">{{ booking.return_date|date:"d M Y" }}</span></td>
+                        <td class="fw-semibold">&#8377;{{ booking.total_cost }}</td>
+                        <td><span class="badge {{ booking.get_status_badge_class }}">{{ booking.get_status_display }}</span></td>
+                        <td>
+                            <a href="{% url 'bookings:detail' booking.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+                            {% if booking.status == 'completed' and not booking.review %}
+                            <a href="{% url 'bookings:review' booking.pk %}" class="btn btn-sm btn-outline-warning ms-1">Review</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-4 text-muted">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        No past bookings yet.
+        <a href="{% url 'bikes:list' %}" class="d-block mt-2 text-warning">Browse bikes and book your first ride!</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

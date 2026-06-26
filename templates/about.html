@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}About Us — RideEase{% endblock %}
+{% block content %}
+<div class="page-header-section pt-5 mt-5 pb-4 bg-dark text-white">
+    <div class="container">
+        <h2 class="fw-bold mb-0">About <span class="text-warning">RideEase</span></h2>
+        <p class="text-muted mb-0">Pune's trusted bike rental platform</p>
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row g-5 align-items-center mb-5">
+        <div class="col-lg-6">
+            <span class="badge bg-warning text-dark mb-3">Our Story</span>
+            <h3 class="fw-bold mb-3">Riding Made Easy Since 2024</h3>
+            <p class="text-muted">RideEase was born out of a simple idea — getting around Pune should be affordable, flexible, and fun. We started with a small fleet of 10 bikes and a passion for two wheels. Today, we serve hundreds of riders every month across Pune.</p>
+            <p class="text-muted">Whether you need a quick scooter for a day trip to the ghats, a sport bike for the weekend, or an electric ride for eco-friendly commuting, RideEase has you covered.</p>
+        </div>
+        <div class="col-lg-6 text-center">
+            <i class="bi bi-bicycle text-warning" style="font-size:10rem;opacity:0.2;"></i>
+        </div>
+    </div>
+    <div class="row g-4 text-center mb-5">
+        <div class="col-md-3">
+            <div class="p-4 rounded-3 border">
+                <div class="fs-1 fw-bold text-warning">500+</div>
+                <div class="text-muted small">Happy Customers</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4 rounded-3 border">
+                <div class="fs-1 fw-bold text-warning">50+</div>
+                <div class="text-muted small">Bikes in Fleet</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4 rounded-3 border">
+                <div class="fs-1 fw-bold text-warning">5</div>
+                <div class="text-muted small">Bike Categories</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4 rounded-3 border">
+                <div class="fs-1 fw-bold text-warning">4.8★</div>
+                <div class="text-muted small">Average Rating</div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <h4 class="fw-bold mb-2">Ready to Ride?</h4>
+        <a href="{% url 'bikes:list' %}" class="btn btn-warning btn-lg px-5 fw-semibold">Browse Our Bikes</a>
+    </div>
+</div>
+{% endblock %}

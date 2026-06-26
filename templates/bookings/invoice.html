@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Invoice #{{ booking.pk }} — RideEase{% endblock %}
+{% block content %}
+<div class="container py-5 mt-5" style="max-width:680px;">
+    <div class="card border shadow-sm">
+        <div class="card-body p-5">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h3 class="fw-bold text-warning mb-0"><i class="bi bi-bicycle me-2"></i>RideEase</h3>
+                    <small class="text-muted">Bike Rental System — Pune, Maharashtra</small>
+                </div>
+                <div class="text-end">
+                    <h5 class="fw-bold mb-0">INVOICE</h5>
+                    <div class="text-muted small">#{{ booking.pk }}</div>
+                    <div class="text-muted small">{{ booking.created_at|date:"d M Y" }}</div>
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-4">
+                <div class="col-6">
+                    <div class="text-muted small mb-1">Customer</div>
+                    <div class="fw-semibold">{{ booking.user.get_full_name|default:booking.user.username }}</div>
+                    <div class="small text-muted">{{ booking.user.email }}</div>
+                    {% if booking.user.phone_number %}<div class="small text-muted">{{ booking.user.phone_number }}</div>{% endif %}
+                </div>
+                <div class="col-6 text-end">
+                    <span class="badge {{ booking.get_status_badge_class }} px-3 py-2">{{ booking.get_status_display }}</span>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr><td class="text-muted small">Bike</td><td class="fw-semibold">{{ booking.bike.brand }} {{ booking.bike.name }}</td></tr>
+                    <tr><td class="text-muted small">Pickup Date</td><td>{{ booking.pickup_date|date:"d M Y" }}</td></tr>
+                    <tr><td class="text-muted small">Return Date</td><td>{{ booking.return_date|date:"d M Y" }}</td></tr>
+                    <tr><td class="text-muted small">Total Days</td><td>{{ booking.total_days }}</td></tr>
+                    <tr><td class="text-muted small">Rate per Day</td><td>&#8377;{{ booking.price_per_day }}</td></tr>
+                    <tr><td class="text-muted small">Helmet Deposit (Refundable)</td><td>&#8377;{{ booking.helmet_deposit }}</td></tr>
+                    <tr class="table-warning"><td class="fw-bold">Total Amount</td><td class="fw-bold fs-5">&#8377;{{ booking.total_cost }}</td></tr>
+                </tbody>
+            </table>
+            <div class="text-center mt-4 text-muted small">
+                Thank you for choosing RideEase!<br>
+                For support: support@rideease.com | +91 XXXXX XXXXX<br>
+                <strong>RideEase Bike Rental System — Pune, Maharashtra</strong>
+            </div>
+            <div class="d-flex justify-content-center gap-2 mt-4">
+                <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-printer me-1"></i>Print
+                </button>
+                <a href="{% url 'bookings:invoice_pdf' booking.pk %}" class="btn btn-danger btn-sm">
+                    <i class="bi bi-file-pdf me-1"></i>Download PDF
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

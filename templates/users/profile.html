@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}My Profile — RideEase{% endblock %}
+{% block content %}
+<div class="page-header-section pt-5 mt-5 pb-4 bg-dark text-white">
+    <div class="container">
+        <h2 class="fw-bold mb-0">My <span class="text-warning">Profile</span></h2>
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm text-center p-4">
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" alt="Profile" class="rounded-circle mb-3" style="width:100px;height:100px;object-fit:cover;">
+                {% else %}
+                <div class="d-flex align-items-center justify-content-center bg-warning rounded-circle mx-auto mb-3" style="width:100px;height:100px;">
+                    <i class="bi bi-person-fill text-white" style="font-size:3rem;"></i>
+                </div>
+                {% endif %}
+                <h5 class="fw-bold">{{ user.get_full_name|default:user.username }}</h5>
+                <p class="text-muted small mb-1">{{ user.email }}</p>
+                {% if user.phone_number %}<p class="text-muted small">{{ user.phone_number }}</p>{% endif %}
+                <hr>
+                <div class="text-start small">
+                    {% if user.city %}<p class="mb-1"><i class="bi bi-geo-alt text-warning me-2"></i>{{ user.city }}{% if user.state %}, {{ user.state }}{% endif %}</p>{% endif %}
+                    {% if user.driving_license %}<p class="mb-1"><i class="bi bi-card-text text-warning me-2"></i>License: {{ user.driving_license }}</p>{% endif %}
+                    <p class="mb-0 text-muted"><i class="bi bi-calendar text-warning me-2"></i>Joined {{ user.date_joined|date:"M Y" }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-pencil-square text-warning me-2"></i>Edit Profile</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% for field in form %}
+                            <div class="col-{% if field.name in 'address,profile_picture' %}12{% else %}6{% endif %}">
+                                <label class="form-label fw-semibold small">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}<div class="text-danger small">{{ field.errors.0 }}</div>{% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-warning fw-semibold mt-4">
+                            <i class="bi bi-check2 me-2"></i>Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

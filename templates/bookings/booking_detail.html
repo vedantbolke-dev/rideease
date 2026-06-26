@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Booking #{{ booking.pk }} — RideEase{% endblock %}
+{% block content %}
+<div class="page-header-section pt-5 mt-5 pb-4 bg-dark text-white">
+    <div class="container">
+        <h2 class="fw-bold mb-0">Booking <span class="text-warning">#{{ booking.pk }}</span></h2>
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+                    <h5 class="fw-bold mb-0">Booking Summary</h5>
+                    <span class="badge {{ booking.get_status_badge_class }} px-3 py-2">{{ booking.get_status_display }}</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="info-block p-3 bg-light rounded-3">
+                                <div class="text-muted small mb-1">Bike</div>
+                                <div class="fw-bold">{{ booking.bike.brand }} {{ booking.bike.name }}</div>
+                                <div class="text-muted small">{{ booking.bike.model_year }} &bull; {{ booking.bike.get_category_display }}</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-block p-3 bg-light rounded-3">
+                                <div class="text-muted small mb-1">Duration</div>
+                                <div class="fw-bold">{{ booking.pickup_date|date:"d M Y" }} → {{ booking.return_date|date:"d M Y" }}</div>
+                                <div class="text-muted small">{{ booking.total_days }} day(s)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-block p-3 bg-light rounded-3">
+                                <div class="text-muted small mb-1">Pickup Location</div>
+                                <div class="fw-semibold">{{ booking.pickup_location }}</div>
+                                {% if booking.drop_location %}
+                                <div class="text-muted small">Drop: {{ booking.drop_location }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-block p-3 bg-warning bg-opacity-10 rounded-3 border border-warning">
+                                <div class="text-muted small mb-1">Total Payable</div>
+                                <div class="fw-bold fs-4 text-warning">&#8377;{{ booking.total_cost }}</div>
+                                <div class="text-muted small">&#8377;{{ booking.price_per_day }}/day &times; {{ booking.total_days }} + &#8377;{{ booking.helmet_deposit }} deposit</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if booking.special_requests %}
+                    <div class="mt-3 p-3 bg-light rounded-3">
+                        <div class="text-muted small mb-1">Special Requests</div>
+                        <div>{{ booking.special_requests }}</div>
+                    </div>
+                    {% endif %}
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <a href="{% url 'bookings:invoice' booking.pk %}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-printer me-1"></i>Print Invoice
+                        </a>
+                        <a href="{% url 'bookings:invoice_pdf' booking.pk %}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-file-pdf me-1"></i>Download PDF
+                        </a>
+                        {% if booking.can_cancel %}
+                        <a href="{% url 'bookings:cancel' booking.pk %}" class="btn btn-outline-danger btn-sm ms-auto">
+                            <i class="bi bi-x-circle me-1"></i>Cancel Booking
+                        </a>
+                        {% endif %}
+                        {% if booking.status == 'completed' and not has_review %}
+                        <a href="{% url 'bookings:review' booking.pk %}" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-star me-1"></i>Write a Review
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

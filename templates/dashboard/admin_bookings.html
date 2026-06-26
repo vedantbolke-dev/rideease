@@ -1,0 +1,80 @@
+{% extends 'dashboard/admin_base.html' %}
+{% block title %}Manage Bookings — RideEase Admin{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0">Booking Management</h4>
+        <p class="text-muted small mb-0">View, confirm, reject and manage all bookings</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'dashboard:export_bookings_csv' %}" class="btn btn-success btn-sm">
+            <i class="bi bi-download me-1"></i>CSV
+        </a>
+        <a href="{% url 'dashboard:export_bookings_pdf' %}" class="btn btn-danger btn-sm">
+            <i class="bi bi-file-pdf me-1"></i>PDF
+        </a>
+    </div>
+</div>
+
+<!-- Status filter tabs -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-2 d-flex flex-wrap gap-1">
+        <a href="{% url 'dashboard:bookings' %}" class="btn btn-sm {% if not status_filter %}btn-warning{% else %}btn-outline-secondary{% endif %}">All</a>
+        {% for key, label in status_choices %}
+        <a href="{% url 'dashboard:bookings' %}?status={{ key }}" class="btn btn-sm {% if status_filter == key %}btn-warning{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>Bike</th>
+                    <th>Pickup</th>
+                    <th>Return</th>
+                    <th>Days</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td class="text-muted small">#{{ booking.pk }}</td>
+                    <td>
+                        <div class="fw-semibold small">{{ booking.user.get_full_name|default:booking.user.username }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">{{ booking.user.email }}</div>
+                    </td>
+                    <td class="small">{{ booking.bike.brand }} {{ booking.bike.name }}</td>
+                    <td class="small">{{ booking.pickup_date|date:"d M Y" }}</td>
+                    <td class="small">{{ booking.return_date|date:"d M Y" }}</td>
+                    <td class="small text-center">{{ booking.total_days }}</td>
+                    <td class="fw-semibold small">&#8377;{{ booking.total_cost }}</td>
+                    <td><span class="badge {{ booking.get_status_badge_class }}">{{ booking.get_status_display }}</span></td>
+                    <td>
+                        <form method="post" action="{% url 'dashboard:booking_status' booking.pk %}" class="d-flex gap-1">
+                            {% csrf_token %}
+                            <select name="status" class="form-select form-select-sm" style="width:120px;">
+                                {% for key, label in status_choices %}
+                                <option value="{{ key }}" {% if booking.status == key %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-warning">
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="9" class="text-center py-5 text-muted">No bookings found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

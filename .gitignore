@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Database files
+db.sqlite3
+db.sqlite3-journal
+
+# Media / Uploaded files
+# We allow default bike images to be committed so they show up on GitHub,
+# but we ignore temporary user profile uploads to keep the repository clean.
+media/profiles/*
+!media/profiles/.gitkeep
+
+# IDEs and OS files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+Thumbs.db
+/staticfiles/

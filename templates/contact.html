@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us — RideEase{% endblock %}
+{% block content %}
+<div class="page-header-section pt-5 mt-5 pb-4 bg-dark text-white">
+    <div class="container">
+        <h2 class="fw-bold mb-0">Contact <span class="text-warning">Us</span></h2>
+        <p class="text-muted mb-0">We're happy to help</p>
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-5">
+            <h5 class="fw-bold mb-4">Get in Touch</h5>
+            <ul class="list-unstyled">
+                <li class="mb-3 d-flex gap-3">
+                    <i class="bi bi-geo-alt-fill text-warning fs-5 flex-shrink-0"></i>
+                    <div><strong>Address</strong><br><span class="text-muted small">Pune, Maharashtra, India — 411001</span></div>
+                </li>
+                <li class="mb-3 d-flex gap-3">
+                    <i class="bi bi-telephone-fill text-warning fs-5 flex-shrink-0"></i>
+                    <div><strong>Phone</strong><br><span class="text-muted small">+91 XXXXX XXXXX</span></div>
+                </li>
+                <li class="mb-3 d-flex gap-3">
+                    <i class="bi bi-envelope-fill text-warning fs-5 flex-shrink-0"></i>
+                    <div><strong>Email</strong><br><span class="text-muted small">support@rideease.com</span></div>
+                </li>
+                <li class="d-flex gap-3">
+                    <i class="bi bi-clock-fill text-warning fs-5 flex-shrink-0"></i>
+                    <div><strong>Hours</strong><br><span class="text-muted small">Monday – Sunday: 8:00 AM – 9:00 PM</span></div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Send a Message</h5>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% for field in form %}
+                            <div class="col-{% if field.name == 'message' %}12{% else %}6{% endif %}">
+                                <label class="form-label fw-semibold small">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}<div class="text-danger small">{{ field.errors.0 }}</div>{% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-warning fw-semibold mt-3 px-4">
+                            <i class="bi bi-send me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

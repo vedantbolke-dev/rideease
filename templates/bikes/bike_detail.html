@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block title %}{{ bike.brand }} {{ bike.name }} — RideEase{% endblock %}
+{% block content %}
+<div class="page-header-section pt-5 mt-5 pb-4 bg-dark text-white">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-warning">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'bikes:list' %}" class="text-warning">Bikes</a></li>
+                <li class="breadcrumb-item active text-muted">{{ bike.brand }} {{ bike.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-6">
+            {% if bike.image %}
+            <img src="{{ bike.image.url }}" alt="{{ bike.name }}" class="img-fluid rounded-3 shadow w-100" style="max-height:400px;object-fit:cover;">
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center bg-light rounded-3" style="height:360px;">
+                <i class="bi bi-bicycle text-warning" style="font-size:8rem;opacity:0.4;"></i>
+            </div>
+            {% endif %}
+
+            {% if reviews %}
+            <div class="mt-4">
+                <h5 class="fw-bold mb-3">Customer Reviews
+                    {% if avg_rating %}<span class="badge bg-warning text-dark ms-2">{{ avg_rating }} ★</span>{% endif %}
+                </h5>
+                {% for review in reviews %}
+                <div class="review-card p-3 border rounded-3 mb-3">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <strong class="small">{{ review.user.get_full_name|default:review.user.username }}</strong>
+                        <span class="text-warning small">
+                            {% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}
+                        </span>
+                    </div>
+                    {% if review.comment %}<p class="text-muted small mb-0">{{ review.comment }}</p>{% endif %}
+                    <p class="text-muted" style="font-size:0.75rem;">{{ review.created_at|date:"d M Y" }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-6">
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                <span class="badge bg-warning text-dark">{{ bike.get_category_display }}</span>
+                {% if bike.is_available %}
+                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Available Now</span>
+                {% else %}
+                <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Currently Rented</span>
+                {% endif %}
+            </div>
+
+            <h2 class="fw-bold mb-1">{{ bike.brand }} {{ bike.name }}</h2>
+            <p class="text-muted">{{ bike.model_year }} Model</p>
+
+            <div class="price-box p-3 rounded-3 bg-light mb-4">
+                <div class="d-flex align-items-baseline gap-2">
+                    <span class="fs-2 fw-bold text-warning">&#8377;{{ bike.price_per_day }}</span>
+                    <span class="text-muted">/ day</span>
+                </div>
+                <small class="text-muted"><i class="bi bi-shield-check me-1 text-success"></i>+ &#8377;{{ bike.helmet_deposit }} refundable helmet deposit</small>
+            </div>
+
+            <div class="row g-3 mb-4">
+                {% if bike.engine_cc %}
+                <div class="col-6 col-md-4">
+                    <div class="spec-box p-2 rounded-3 border text-center">
+                        <i class="bi bi-gear text-warning d-block mb-1"></i>
+                        <div class="small fw-semibold">{{ bike.engine_cc }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Engine</div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if bike.mileage %}
+                <div class="col-6 col-md-4">
+                    <div class="spec-box p-2 rounded-3 border text-center">
+                        <i class="bi bi-fuel-pump text-warning d-block mb-1"></i>
+                        <div class="small fw-semibold">{{ bike.mileage }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Mileage</div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if bike.top_speed %}
+                <div class="col-6 col-md-4">
+                    <div class="spec-box p-2 rounded-3 border text-center">
+                        <i class="bi bi-speedometer2 text-warning d-block mb-1"></i>
+                        <div class="small fw-semibold">{{ bike.top_speed }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Top Speed</div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="col-6 col-md-4">
+                    <div class="spec-box p-2 rounded-3 border text-center">
+                        <i class="bi bi-lightning text-warning d-block mb-1"></i>
+                        <div class="small fw-semibold">{{ bike.get_fuel_type_display }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Fuel Type</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="spec-box p-2 rounded-3 border text-center">
+                        <i class="bi bi-joystick text-warning d-block mb-1"></i>
+                        <div class="small fw-semibold">{{ bike.get_transmission_display }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Transmission</div>
+                    </div>
+                </div>
+                {% if bike.color %}
+                <div class="col-6 col-md-4">
+                    <div class="spec-box p-2 rounded-3 border text-center">
+                        <i class="bi bi-palette text-warning d-block mb-1"></i>
+                        <div class="small fw-semibold">{{ bike.color }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">Color</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if bike.description %}
+            <p class="text-muted small mb-4">{{ bike.description }}</p>
+            {% endif %}
+
+            {% if bike.features %}
+            <div class="mb-4">
+                <h6 class="fw-bold mb-2">Features</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for f in bike.get_features_list %}
+                    <span class="badge bg-light text-dark border"><i class="bi bi-check-lg text-success me-1"></i>{{ f }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="d-flex gap-3">
+                {% if bike.is_available %}
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'bookings:create' bike.pk %}" class="btn btn-warning btn-lg flex-fill fw-semibold">
+                        <i class="bi bi-calendar-check me-2"></i>Book This Bike
+                    </a>
+                    {% else %}
+                    <a href="{% url 'users:login' %}?next={% url 'bookings:create' bike.pk %}" class="btn btn-warning btn-lg flex-fill fw-semibold">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login to Book
+                    </a>
+                    {% endif %}
+                {% else %}
+                <button class="btn btn-secondary btn-lg flex-fill" disabled>
+                    <i class="bi bi-x-circle me-2"></i>Currently Unavailable
+                </button>
+                {% endif %}
+                <a href="{% url 'bikes:list' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+            </div>
+
+            <p class="text-muted small mt-3">
+                <i class="bi bi-geo-alt me-1"></i>Pickup: {{ bike.location }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
